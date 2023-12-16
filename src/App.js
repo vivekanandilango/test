@@ -66,7 +66,7 @@ const DataTable = ({ columns, data }) => {
 // Main App component
 const App = () => {
   const [data, setData] = useState([]);
-  const [url, setUrl] = useState('https://test-7agc.onrender.com/get-nse-corp-bond-data/');
+  const [url, setUrl] = useState('https://test-7agc.onrender.com/get-nse-gsec-data/');
 
   const columns = [
     {
@@ -166,7 +166,7 @@ const App = () => {
       'bse sgb': 'https://test-7agc.onrender.com/get-bse-sgb-data/',
     };
 
-    const [selectedValue, setSelectedValue] = useState('nse corp bonds');
+    const [selectedValue, setSelectedValue] = useState('nse gsec');
 
     const handleChange = (event) => {
       setSelectedValue(event.target.value);
