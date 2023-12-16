@@ -79,10 +79,10 @@ const App = () => {
       accessor: 'symbol',
       filter: 'text',
       Cell: ({ row }) => {
-        if (row.hasOwnProperty('bse_scrip')) {
-          return row.bse_scrip;
+        if (row.values.hasOwnProperty('bse_scrip')) {
+          return row.values.bse_scrip;
         } else {
-          return row.symbol;
+          return row.values.symbol;
         }
       }
     },
@@ -127,7 +127,7 @@ const App = () => {
       accessor: 'time_to_maturity',
       filter: 'numeric',
       Cell: ({ row }) => {
-        const otherDate = new Date(row.maturity_date);
+        const otherDate = new Date(row.values.maturity_date);
         const today = new Date();
         const diffTime = Math.abs(otherDate - today);
         const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
