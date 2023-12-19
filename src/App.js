@@ -174,6 +174,7 @@ function App() {
       setSelectedValue(event.target.value);
       if (event.target.value !== '...') {
         setUrl(urlOptions[event.target.value]);
+        // fetchData(url);
       }
     };
 
@@ -199,29 +200,6 @@ function App() {
     onSuccess: (codeResponse) => setUser(codeResponse),
     onError: (error) => console.log('Login Failed:', error)
   });
-
-  useEffect(
-    () => {
-      if (user) {
-        axios
-          .get(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${user.access_token}`, {
-            headers: {
-              Authorization: `Bearer ${user.access_token}`,
-              Accept: 'application/json'
-            }
-          })
-          .then((res) => {
-            setProfile(res.data);
-          })
-          .catch((err) => console.log(err));
-      }
-      if (url) {
-        fetchData(url);
-      }
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [user, url]
-  );
 
   useEffect(
     () => {
