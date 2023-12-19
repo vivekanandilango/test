@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import { useTable, useSortBy, useGlobalFilter } from 'react-table';
 import { TextField, Button, Paper } from '@mui/material';
+import { googleLogout, useGoogleLogin } from '@react-oauth/google';
+import axios from 'axios';
 
-// Header component
 const Header = () => (
   <header>
     <h1>Attempting a test website</h1>
@@ -63,10 +63,12 @@ const DataTable = ({ columns, data }) => {
   );
 };
 
-// Main App component
-const App = () => {
+
+function App() {
   const [data, setData] = useState([]);
-  const [url, setUrl] = useState('https://test-7agc.onrender.com/get-nse-gsec-data/');
+  const [url, setUrl] = useState('');
+  const [user, setUser] = useState([]);
+  const [profile, setProfile] = useState([]);
 
   const columns = [
     {
@@ -157,6 +159,7 @@ const App = () => {
 
   const Dropdown = () => {
     const urlOptions = {
+      '...': '...',
       'nse gsec': 'https://test-7agc.onrender.com/get-nse-gsec-data/',
       'nse corp bonds': 'https://test-7agc.onrender.com/get-nse-corp-bond-data/',
       'nse sgb': 'https://test-7agc.onrender.com/get-nse-sgb-data/',
@@ -165,11 +168,13 @@ const App = () => {
       'bse sgb': 'https://test-7agc.onrender.com/get-bse-sgb-data/',
     };
 
-    const [selectedValue, setSelectedValue] = useState('nse gsec');
+    const [selectedValue, setSelectedValue] = useState('...');
 
     const handleChange = (event) => {
       setSelectedValue(event.target.value);
-      setUrl(urlOptions[event.target.value]);
+      if (event.target.value !== '...') {
+        setUrl(urlOptions[event.target.value]);
+      }
     };
 
     return (
@@ -185,24 +190,87 @@ const App = () => {
 
 
   const fetchData = async (url) => {
-    const response = await axios.get(url);
+    const headers = { 'access_token': `${user.access_token}` }
+    const response = await axios.get(url, { headers });
     setData(response.data);
   };
 
-  useEffect(() => {
-    fetchData(url);
-  }, [url]);
+  const login = useGoogleLogin({
+    onSuccess: (codeResponse) => setUser(codeResponse),
+    onError: (error) => console.log('Login Failed:', error)
+  });
+
+  useEffect(
+    () => {
+      if (user) {
+        axios
+          .get(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${user.access_token}`, {
+            headers: {
+              Authorization: `Bearer ${user.access_token}`,
+              Accept: 'application/json'
+            }
+          })
+          .then((res) => {
+            setProfile(res.data);
+          })
+          .catch((err) => console.log(err));
+      }
+      if (url) {
+        fetchData(url);
+      }
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [user, url]
+  );
+
+  useEffect(
+    () => {
+      if (user) {
+        axios
+          .get(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${user.access_token}`, {
+            headers: {
+              Authorization: `Bearer ${user.access_token}`,
+              Accept: 'application/json'
+            }
+          })
+          .then((res) => {
+            setProfile(res.data);
+          })
+          .catch((err) => console.log(err));
+      }
+      if (url) {
+        fetchData(url);
+      }
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [user, url]
+  );
+
+  // log out function to log the user out of google and set the profile array to null
+  const logOut = () => {
+    googleLogout();
+    setUser(null);
+    setProfile(null);
+    setUrl(null);
+  };
+
 
   return (
-    <Paper>
-      <Header />
-      <Dropdown />
-      <Button variant="contained" color="primary" onClick={fetchData}>
-        Refresh
-      </Button>
-      <DataTable columns={columns} data={data} />
-    </Paper>
+    <div>
+      {profile ? (
+        <button onClick={logOut}>Log out</button>
+      ) : (
+        <button onClick={() => login()}>Sign in with Google 🚀 </button>
+      )}
+      <Paper>
+        <Header />
+        <Dropdown />
+        <Button variant="contained" color="primary" onClick={fetchData}>
+          Refresh
+        </Button>
+        <DataTable columns={columns} data={data} />
+      </Paper>
+    </div>
   );
-};
-
+}
 export default App;
