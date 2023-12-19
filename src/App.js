@@ -67,8 +67,9 @@ const DataTable = ({ columns, data }) => {
 function App() {
   const [data, setData] = useState([]);
   const [url, setUrl] = useState('');
-  const [user, setUser] = useState([]);
-  const [profile, setProfile] = useState([]);
+  const [user, setUser] = useState(null);
+  const [profile, setProfile] = useState(null);
+  const [selectedValue, setSelectedValue] = useState('');
 
   const columns = [
     {
@@ -168,13 +169,11 @@ function App() {
       'bse sgb': 'https://test-7agc.onrender.com/get-bse-sgb-data/',
     };
 
-    const [selectedValue, setSelectedValue] = useState('...');
 
     const handleChange = (event) => {
       setSelectedValue(event.target.value);
       if (event.target.value !== '...') {
         setUrl(urlOptions[event.target.value]);
-        // fetchData(url);
       }
     };
 
@@ -190,10 +189,12 @@ function App() {
   };
 
 
-  const fetchData = async (url) => {
-    const headers = { 'access_token': `${user.access_token}` }
-    const response = await axios.get(url, { headers });
-    setData(response.data);
+  const fetchData = async () => {
+    if (!!url) {
+      const headers = { 'access_token': `${user.access_token}` }
+      const response = await axios.get(url, { headers });
+      setData(response.data);
+    }
   };
 
   const login = useGoogleLogin({
@@ -217,7 +218,7 @@ function App() {
           .catch((err) => console.log(err));
       }
       if (url) {
-        fetchData(url);
+        fetchData();
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
