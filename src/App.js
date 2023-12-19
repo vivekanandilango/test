@@ -79,11 +79,10 @@ const App = () => {
       accessor: 'symbol',
       filter: 'text',
       Cell: ({ row }) => {
-        if (row.values.hasOwnProperty('bse_scrip')) {
-          return row.values.bse_scrip;
-        } else {
-          return row.values.symbol;
+        if (row.original.hasOwnProperty('bse_scrip')) {
+          return row.original.bse_scrip;
         }
+        return row.values.symbol;
       }
     },
     {
