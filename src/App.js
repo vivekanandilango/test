@@ -218,7 +218,7 @@ function App() {
           .catch((err) => console.log(err));
       }
       if (url) {
-        fetchData();
+        // fetchData();
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -231,6 +231,7 @@ function App() {
     setUser(null);
     setProfile(null);
     setUrl(null);
+    setSelectedValue('');
   };
 
 
