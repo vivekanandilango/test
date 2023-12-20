@@ -204,7 +204,7 @@ function App() {
 
   useEffect(
     () => {
-      if (user) {
+      if (user && (profile == null)) {
         axios
           .get(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${user.access_token}`, {
             headers: {
@@ -213,12 +213,13 @@ function App() {
             }
           })
           .then((res) => {
+            console.log(res);
             setProfile(res.data);
           })
           .catch((err) => console.log(err));
       }
       if (url) {
-        // fetchData();
+        fetchData();
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
