@@ -2,12 +2,12 @@
 const Dropdown = ({ selectedValue, setSelectedValue, setUrl }) => {
     const urlOptions = {
         '...': '...',
-        'nse gsec': 'http://130.61.177.8:8009/get-nse-gsec-data/',
-        'nse corp bonds': 'http://130.61.177.8:8009/get-nse-corp-bond-data/',
-        'nse sgb': 'http://130.61.177.8:8009/get-nse-sgb-data/',
-        'bse gsec': 'http://130.61.177.8:8009/get-bse-gsec-data/',
-        'bse corp bonds': 'http://130.61.177.8:8009/get-bse-corp-bond-data/',
-        'bse sgb': 'http://130.61.177.8:8009/get-bse-sgb-data/',
+        'nse gsec': 'https://test-7agc.onrender.com/get-nse-gsec-data/',
+        'nse corp bonds': 'https://test-7agc.onrender.com/get-nse-corp-bond-data/',
+        'nse sgb': 'https://test-7agc.onrender.com/get-nse-sgb-data/',
+        'bse gsec': 'https://test-7agc.onrender.com/get-bse-gsec-data/',
+        'bse corp bonds': 'https://test-7agc.onrender.com/get-bse-corp-bond-data/',
+        'bse sgb': 'https://test-7agc.onrender.com/get-bse-sgb-data/',
     };
 
 
