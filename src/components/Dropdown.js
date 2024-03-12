@@ -2,7 +2,7 @@
 const Dropdown = ({ selectedValue, setSelectedValue, setUrl }) => {
     const urlOptions = {
         '...': '...',
-        'nse gsec': 'http://130.61.177.8:8009/get-nse-gsec-data/',
+        'nse gsec': 'https://test-7agc.onrender.com/get-nse-gsec-data/',
         'nse corp bonds': 'http://130.61.177.8:8009/get-nse-corp-bond-data/',
         'nse sgb': 'http://130.61.177.8:8009/get-nse-sgb-data/',
         'bse gsec': 'http://130.61.177.8:8009/get-bse-gsec-data/',
